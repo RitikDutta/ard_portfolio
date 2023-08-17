@@ -1,3 +1,5 @@
+// document.getElementsByClassName("Header")[0].style.display='none';
+
 document.addEventListener('DOMContentLoaded', async () => {
   const response = await fetch('https://script.google.com/macros/s/AKfycbwqHVmWKY7ucPCM_hfJYdWvoCsvOTUOC1CAp79xS75yOIC8nTdL3aLJwKl6iZy5DA-Rfw/exec');
 const data = await response.json();
@@ -24,16 +26,21 @@ const data = await response.json();
 function createInstagramEmbed(url) {
   console.log(url)
   const embedCode = `  
-  <blockquote class="instagram-media" data-instgrm-permalink="${url}/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/Cv7NIK3hX2O/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style="background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
   <div style="padding:16px;">
     <a href="https://www.instagram.com/reel/Cv7NIK3hX2O/?utm_source=ig_embed&amp;utm_campaign=loading" style="background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank">
-      <div style="display: flex; flex-direction: column; align-items: center;">
-        <div style="padding-bottom: 75%; position: relative; display: block; width: 100%; background-size: cover; background-position: center;"></div>
-      </div>
+      <div style="padding: 19% 0;"></div>
     </a>
+    <p style="color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;">
+      <a href="https://www.instagram.com/reel/Cv7NIK3hX2O/?utm_source=ig_embed&amp;utm_campaign=loading" style="color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">
+        A post shared by Codebasics (@codebasicshub)
+      </a>
+    </p>
   </div>
 </blockquote>
 <script async src="//www.instagram.com/embed.js"></script>
+
+
 
 
     `;
