@@ -1,108 +1,88 @@
-// document.getElementsByClassName("Header")[0].style.display='none';
-
-document.addEventListener('DOMContentLoaded', async () => {
-  const response = await fetch('https://script.google.com/macros/s/AKfycbwqHVmWKY7ucPCM_hfJYdWvoCsvOTUOC1CAp79xS75yOIC8nTdL3aLJwKl6iZy5DA-Rfw/exec');
+async function fetchData() {
+  const response = await fetch('https://script.google.com/macros/s/AKfycbwbUb8XQx_T57y-1ruCVszU5uk5MVC1JjNMqVhe2m7L2kGsFhaWzJ5JuvfBkvoPW8Vt/exec');
   const data = await response.json();
+  return data;
+}
 
-  const tabsContainer = document.createElement('div');
-  tabsContainer.classList.add('tabs');
+function getColumnClass(size) {
+  if (size === 's') {
+    return 'column-md-4';
+  } else if (size === 'm') {
+    return 'column-md-6';
+  } else if (size === 'l') {
+    return 'column-md-12';
+  }
+}
 
-  const portfolioContainer = document.createElement('div');
-  portfolioContainer.id = 'portfolio';
-  portfolioContainer.classList.add('portfolio-grid');
+// Function to create and append a project item
+function createProjectItem(imageSrc, title, category, size) {
+  const columnDiv = document.createElement('div');
+  columnDiv.classList.add('column-xs-12', getColumnClass(size));
 
-  const uniqueTypes = [...new Set(data.projects.map(project => project.type))];
+  const figure = document.createElement('figure');
+  figure.classList.add('img-container');
 
-  uniqueTypes.forEach(type => {
-    const tabButton = document.createElement('button');
-    tabButton.textContent = type;
-    tabButton.addEventListener('click', () => filterProjectsByType(type, data.projects));
+  const img = document.createElement('img');
+  img.src = imageSrc;
+
+  const figcaptionContent = `
+    <h2 class="title">${title}</h2>
+    <h3 class="category">${category}</h3>
+  `;
+
+  const figcaption = document.createElement('figcaption');
+  figcaption.classList.add('img-content');
+  figcaption.innerHTML = figcaptionContent;
+
+  figure.appendChild(img);
+  figure.appendChild(figcaption);
+  columnDiv.appendChild(figure);
+
+  return columnDiv;
+}
+
+// Function to create and append tab buttons
+function createTabButton(category) {
+  const tabButton = document.createElement('button');
+  tabButton.textContent = category;
+  tabButton.addEventListener('click', () => filterProjectsByCategory(category));
+  return tabButton;
+}
+
+// Function to populate tabs with fetched categories
+async function populateTabs() {
+  const tabsContainer = document.querySelector('.tabs');
+  const projectData = await fetchData();
+
+  const categories = [...new Set(projectData.map(project => project.category))];
+  categories.forEach(category => {
+    const tabButton = createTabButton(category);
     tabsContainer.appendChild(tabButton);
   });
+}
 
-  document.body.appendChild(tabsContainer);
-  document.body.appendChild(portfolioContainer);
+// Function to filter projects by category
+function filterProjectsByCategory(category) {
+  const galleryContainer = document.querySelector('.gallery .grid');
+  galleryContainer.innerHTML = '';
 
-function createInstagramEmbed(url, orientation) {
-  console.log(url)
-  let embedCode = '';
-
-  if (orientation === 'landscape'){
-    embedCode = `  
-    <div class="embed-container">
-      <iframe class="iframe2L" src="https://www.instagram.com/p/${extractVideoIdFromInstagramLink(url)}/embed/"  frameborder="0" scrolling="no" allowtransparency="true" ></iframe>
-    </div>
-
-      `;
-  }
-  else{
-    embedCode = `  
-    <div class="embed-container">
-      <iframe class="iframe2P" src="https://www.instagram.com/p/${extractVideoIdFromInstagramLink(url)}/embed/"  frameborder="0" scrolling="no" allowtransparency="true" ></iframe>
-    </div>
-
-      `;
-  }
-
-  return embedCode;
+  fetchData().then(projectData => {
+    if (category === '') {
+      projectData.forEach(project => {
+        const projectItem = createProjectItem(project.imageSrc, project.title, project.category, project.size);
+        galleryContainer.appendChild(projectItem);
+      });
+    } else {
+      projectData
+        .filter(project => project.category === category)
+        .forEach(project => {
+          const projectItem = createProjectItem(project.imageSrc, project.title, project.category, project.size);
+          galleryContainer.appendChild(projectItem);
+        });
+    }
+  });
 }
 
 
-  function getYoutubeEmbedCode(url, orientation) {
-  const embedCode = `
-  <div class="embed-container">
-    <iframe class="iframe1" src="https://www.youtube.com/embed/${extractVideoIdFromYouTubeLink(url)}" ...></iframe>
-  </div>
-  `;
-  return embedCode;
-  }
-
-  function extractVideoIdFromYouTubeLink(url) {
-    const regExp = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return match && match[1].length === 11 ? match[1] : null;
-  }
-
-  function extractVideoIdFromInstagramLink(url) {
-    const regExp = /(p|reel)\/([a-zA-Z0-9_-]+)/;
-    const match = url.match(regExp);
-    if (match && match.length >= 3) {
-      return match[2];
-    }
-    return null;
-  }
-
-
-
-  function filterProjectsByType(type, projects) {
-    portfolioContainer.innerHTML = '';
-    projects.filter(project => project.type === type).forEach(project => {
-    console.log(project.orientation)
-      const projectDiv = document.createElement('div');
-      projectDiv.classList.add('project-item');
-
-      const projectTitle = document.createElement('h2');
-      projectTitle.textContent = project.name;
-
-      let projectContent;
-
-      if (project.application === 'instagram') {
-        projectContent = document.createElement('div');
-        projectContent.innerHTML = createInstagramEmbed(project.link, project.orientation);
-      } else if (project.application === 'youtube') {
-        projectContent = document.createElement('div');
-        projectContent.innerHTML = getYoutubeEmbedCode(project.link, project.orientation);
-      }
-
-      projectDiv.appendChild(projectTitle);
-      projectDiv.appendChild(projectContent);
-
-      portfolioContainer.appendChild(projectDiv);
-    });
-  }
-
-  // Initialize the page with the first tab
-  if (uniqueTypes.length > 0) {
-    filterProjectsByType(uniqueTypes[0], data.projects);
-  }
-});
+populateTabs();
+filterProjectsByCategory('');
