@@ -597,7 +597,7 @@ nav li:nth-child(2) {
 
 .img-container {
   width: 100%;
-  height: 500px;
+/*  height: 500px;*/
   cursor: pointer;
   overflow: hidden;
 }
@@ -746,7 +746,21 @@ footer {
   }
    .embed-container {
     position: relative;
-    padding-bottom: 56.25%;
+    padding-bottom: 100%;
+    height: 0;
+    overflow: hidden;
+  }
+  .embed-containerShorts {
+    position: relative;
+    padding-bottom: 125%;
+    height: 0;
+    overflow: hidden;
+  }
+
+
+  .embed-containerP {
+    position: relative;
+    padding-bottom: 125%;
     height: 0;
     overflow: hidden;
   }
@@ -758,11 +772,19 @@ footer {
     width: 100%;
     height: 100%;
   }
-  .embed-container .iframe2P {
+
+  .embed-containerShorts .iframe1 {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    width: 69%;
+    height: 100%;
+  }
+  .embed-containerP .iframe2P {
     position: absolute;
     top: -50px;
-    left: 23%;
-    width: 54%;
+    left: 0;
+    width: 100%;
     height: 122%;
   }
   .embed-container .iframe2L {
@@ -770,7 +792,7 @@ footer {
     top: -50px;
     left: 0;
     width: 100%;
-    height: 122%;
+    height: 115%;
   }
 
 
