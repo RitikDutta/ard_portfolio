@@ -109,7 +109,7 @@ function createProjectItem(imageSrc, title, category, size, link, orientation) {
   `;
 
   const figcaption = document.createElement('figcaption');
-  figcaption.classList.add('img-content').;
+  figcaption.classList.add('img-content');
   figcaption.innerHTML = figcaptionContent;
 
   figure.appendChild(figcaption);
