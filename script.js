@@ -1,3 +1,9 @@
+async function fetchData2() {
+  const response = await fetch('https://script.google.com/macros/s/AKfycbwbUb8XQx_T57y-1ruCVszU5uk5MVC1JjNMqVhe2m7L2kGsFhaWzJ5JuvfBkvoPW8Vt/exec');
+  const data = await response.json();
+  return data;
+}
+
 async function fetchData() {
   const response = await fetch('https://script.google.com/macros/s/AKfycbwbUb8XQx_T57y-1ruCVszU5uk5MVC1JjNMqVhe2m7L2kGsFhaWzJ5JuvfBkvoPW8Vt/exec');
   const data = await response.json();
